@@ -27,9 +27,11 @@ abstract final class _Layout {
   static const double codeGap = 8;
   static const double splitGap = 21;
 
-  // "CENTROAMERICA": ink y 124–145, centred on x 146.
-  static const double footerTop = 116;
-  static const double footerHeight = 36;
+  // "CENTROAMERICA": ink y 124–145, x 78–214. The plate's face is condensed;
+  // the theme's is not, so the glyph is sized to the measured width and the
+  // ink comes out about half the measured height.
+  static const double footerTop = 122;
+  static const double footerHeight = 22;
 
   // The black block bottom right.
   static const PlateBox block = PlateBox(267.6, 132, 18, 10.2);
@@ -138,7 +140,7 @@ abstract final class NicaraguaPlates {
         PlateLabel(
           text: 'CENTROAMERICA',
           box: PlateBox(70, _Layout.footerTop, 152, _Layout.footerHeight),
-          glyphHeight: _Layout.footerHeight,
+          glyphHeight: 21,
         ),
       ],
     );
