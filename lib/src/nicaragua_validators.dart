@@ -1,15 +1,64 @@
-/// Nicaraguan plate validators. These describe the allowed formats but do not
-/// enforce them—they are advisory only.
-abstract final class NicaraguaValidators {
-  /// Standard format: 1–2 letters followed by 5 digits.
-  /// Example: MQ00293, B12345.
-  static bool isValidSerial(String value) {
-    if (value.length < 6 || value.length > 7) return false;
-    final letters = value.substring(0, value.length - 5).toUpperCase();
-    final digits = value.substring(value.length - 5);
-    return letters.isNotEmpty &&
-        letters.length <= 2 &&
-        letters.split('').every((c) => c.compareTo('A') >= 0 && c.compareTo('Z') <= 0) &&
-        digits.split('').every((c) => c.compareTo('0') >= 0 && c.compareTo('9') <= 0);
+import 'package:plate_core/plate_core.dart';
+
+/// Judges a 2005-series value. Reports, never throws, never bars a keystroke.
+///
+/// Quiet until the number is in. Then the department code must be one seen on
+/// the series, and Managua (`M`) takes six digits where every other code takes
+/// three or four.
+class NicaraguaValidator extends GatedPlateValidator {
+  const NicaraguaValidator();
+
+  @override
+  String get gateGroup => 'number';
+
+  /// Codes confirmed on 2005-series plates or in the sources' lists. Boaco,
+  /// Carazo, Madriz, Río San Juan and Rivas certainly have codes, but none was
+  /// confirmed, so they are not guessed at here.
+  static const Map<String, String> departments = <String, String>{
+    'M': 'Managua',
+    'MY': 'Masaya',
+    'MT': 'Matagalpa',
+    'CH': 'Chinandega',
+    'CT': 'Chontales',
+    'NS': 'Nueva Segovia',
+    'ES': 'Estelí',
+    'JI': 'Jinotega',
+    'GR': 'Granada',
+    'LE': 'León',
+    'RN': 'Atlántico Norte',
+    'RS': 'Atlántico Sur',
+    'PN': 'Policía Nacional',
+    'CD': 'Diplomatic corps',
+    'CC': 'Consular corps',
+    'MI': 'International mission',
+  };
+
+  static const String reasonDepartment = 'The letters name no department.';
+  static const String reasonManagua = 'Managua numbers have six digits.';
+  static const String reasonNumber = 'The number has three or four digits.';
+
+  @override
+  PlateValidation judge(PlateEntry entry) {
+    // A split Managua number is not finished until its second half is in.
+    if (entry.spec.indicesOfGroup('number_tail').isNotEmpty &&
+        entry.group('number_tail').isEmpty) {
+      return const PlateValidation.valid();
+    }
+    final code = entry.group('department');
+    final number = entry.group('number') + entry.group('number_tail');
+    if (!departments.containsKey(code)) {
+      return const PlateValidation.invalid(reasonDepartment);
+    }
+    if (!isDigits(number)) {
+      return const PlateValidation.invalid(reasonNumber);
+    }
+    if (code == 'M') {
+      return number.length == 6
+          ? const PlateValidation.valid()
+          : const PlateValidation.invalid(reasonManagua);
+    }
+    return number.length == 3 || number.length == 4
+        ? const PlateValidation.valid()
+        : const PlateValidation.invalid(reasonNumber);
   }
 }

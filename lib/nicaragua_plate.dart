@@ -1,8 +1,7 @@
 /// Nicaragua's licence plates for the `plate_core` library.
 ///
-/// The current format is a simple black on white plate with a brown frame,
-/// displaying a region code (1–2 letters) and a 5-digit serial number.
-/// State vehicles carry the "ESTATAL" designation at the bottom.
+/// The 2005 series: black on white, a department code of one or two letters
+/// and a number of three to six digits.
 library;
 
 export 'src/nicaragua_alphabets.dart';
