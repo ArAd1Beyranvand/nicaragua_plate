@@ -1,6 +1,7 @@
 name: nicaragua_plate
 description: Nicaraguan licence plate specifications for plate_core.
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: '>=3.4.0 <4.0.0'

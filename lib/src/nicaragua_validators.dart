@@ -9,7 +9,7 @@ abstract final class NicaraguaValidators {
     final digits = value.substring(value.length - 5);
     return letters.isNotEmpty &&
         letters.length <= 2 &&
-        letters.every((c) => c.compareTo('A') >= 0 && c.compareTo('Z') <= 0) &&
-        digits.every((c) => c.compareTo('0') >= 0 && c.compareTo('9') <= 0);
+        letters.split('').every((c) => c.compareTo('A') >= 0 && c.compareTo('Z') <= 0) &&
+        digits.split('').every((c) => c.compareTo('0') >= 0 && c.compareTo('9') <= 0);
   }
 }
