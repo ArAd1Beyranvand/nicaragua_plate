@@ -1,2 +1,3 @@
 build/
 .dart_tool/
+all_publish_warnings.txt
