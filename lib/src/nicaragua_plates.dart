@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:plate_core/plate_core.dart';
 
 import 'nicaragua_alphabets.dart';
@@ -42,7 +44,7 @@ abstract final class _Layout {
 ///
 /// The serial is a department code of one or two letters, then the number.
 /// Managua (`M`) runs six digits printed 3 + 3; the other departments run
-/// three or four. One cell per character.
+/// three or four. One slot per run: the code, the number and, for Managua, its second half.
 ///
 /// Text groups: `department`, then `number` (and `number_tail` for the second
 /// half of a split Managua number).
@@ -94,20 +96,22 @@ abstract final class NicaraguaPlates {
     final digitsLeft = left + letters * _Layout.pitch + _Layout.codeGap;
     final tailLeft = digitsLeft + head * _Layout.pitch + _Layout.splitGap;
 
-    List<PlateSlot> run(PlateAlphabet a, int count, double from) =>
-        plateRegister(
-          alphabet: a,
-          count: count,
-          left: from,
-          top: _Layout.serialTop,
-          width: _Layout.pitch,
-          height: _Layout.serialHeight,
-        );
+    PlateSlot run(PlateAlphabet a, int count, double from) => PlateSlot(
+      alphabet: a,
+      box: PlateBox(
+        from,
+        _Layout.serialTop,
+        count * _Layout.pitch,
+        _Layout.serialHeight,
+      ),
+      length: count,
+      spacing: max(0, _Layout.pitch - 0.6 * 0.72 * _Layout.serialHeight),
+    );
 
     final slots = <PlateSlot>[
-      ...run(NicaraguaAlphabets.letters, letters, left),
-      ...run(NicaraguaAlphabets.digits, head, digitsLeft),
-      if (split) ...run(NicaraguaAlphabets.digits, digits - head, tailLeft),
+      run(NicaraguaAlphabets.letters, letters, left),
+      run(NicaraguaAlphabets.digits, head, digitsLeft),
+      if (split) run(NicaraguaAlphabets.digits, digits - head, tailLeft),
     ];
 
     return PlateSpec(
@@ -119,16 +123,9 @@ abstract final class NicaraguaPlates {
       noPanel: true,
       slots: slots,
       textGroups: <PlateTextGroup>[
-        PlateTextGroup(<int>[
-          for (var i = 0; i < letters; i++) i,
-        ], key: 'department'),
-        PlateTextGroup(<int>[
-          for (var i = letters; i < letters + head; i++) i,
-        ], key: 'number'),
-        if (split)
-          PlateTextGroup(<int>[
-            for (var i = letters + head; i < slots.length; i++) i,
-          ], key: 'number_tail'),
+        const PlateTextGroup(<int>[0], key: 'department'),
+        const PlateTextGroup(<int>[1], key: 'number'),
+        if (split) const PlateTextGroup(<int>[2], key: 'number_tail'),
       ],
       rules: const <PlateRule>[PlateRule(box: _Layout.block)],
       labels: const <PlateLabel>[

@@ -27,9 +27,7 @@ void main() {
     String value,
     String name,
   ) async {
-    final controller = PlateController.fromValues(spec, <String?>[
-      for (final c in value.split('')) c,
-    ]);
+    final controller = PlateController.fromValues(spec, value.split('|'));
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -61,14 +59,14 @@ void main() {
 
   testWidgets(
     'Managua',
-    (t) => renderGolden(t, NicaraguaPlates.managua, 'M123456', 'ni_managua'),
+    (t) => renderGolden(t, NicaraguaPlates.managua, 'M|123|456', 'ni_managua'),
   );
   testWidgets(
     'Chontales',
     (t) => renderGolden(
       t,
       NicaraguaPlates.department,
-      'CT4361',
+      'CT|4361',
       'ni_department',
     ),
   );
@@ -77,7 +75,7 @@ void main() {
     (t) => renderGolden(
       t,
       NicaraguaPlates.departmentShort,
-      'MY142',
+      'MY|142',
       'ni_department_short',
     ),
   );
