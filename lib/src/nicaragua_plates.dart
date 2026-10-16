@@ -44,7 +44,8 @@ abstract final class _Layout {
 ///
 /// The serial is a department code of one or two letters, then the number.
 /// Managua (`M`) runs six digits printed 3 + 3; the other departments run
-/// three or four. One slot per run: the code, the number and, for Managua, its second half.
+/// three or four. One slot per run: the code, the number and, for Managua, its second
+/// half.
 ///
 /// Text groups: `department`, then `number` (and `number_tail` for the second
 /// half of a split Managua number).
