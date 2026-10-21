@@ -5,11 +5,8 @@ import 'package:plate_core/plate_core.dart';
 import 'nicaragua_alphabets.dart';
 import 'nicaragua_country.dart';
 
-/// Where the ink sits on the 2005-series plate, in millimetres on the
-/// 300 × 152 mm US-size blank.
-///
-/// Measured from the matriculasdelmundo artwork of M 123 456 (500 × 250 px,
-/// 0.6 mm/px) and checked against the photographs of M 027 557 and CT 4361.
+/// Ink positions in millimetres on the 300 × 152 mm blank, measured from the
+/// matriculasdelmundo artwork of M 123 456.
 abstract final class _Layout {
   static const double width = 300;
   static const double height = 152;
@@ -39,20 +36,13 @@ abstract final class _Layout {
   static const PlateBox block = PlateBox(267.6, 132, 18, 10.2);
 }
 
-/// Nicaragua's 2005 series, issued by the Policía Nacional: black on white,
-/// "NICARAGUA" above and "CENTROAMERICA" below the serial.
+/// The 2005 series: a department code, then the number.
 ///
-/// The serial is a department code of one or two letters, then the number.
-/// Managua (`M`) runs six digits printed 3 + 3; the other departments run
-/// three or four. One slot per run: the code, the number and, for Managua, its second
-/// half.
+/// Managua (`M`) runs six digits printed 3 + 3, so its number is two slots;
+/// text groups are `department`, `number` and, for the split, `number_tail`.
 ///
-/// Text groups: `department`, then `number` (and `number_tail` for the second
-/// half of a split Managua number).
-///
-/// Not drawn: the light-blue map of Nicaragua under the serial and the
-/// coat-of-arms seal top left — no freely licensed artwork of either was
-/// found, so they are left off rather than approximated.
+/// The map under the serial and the seal top left are not drawn: no freely
+/// licensed artwork was found.
 abstract final class NicaraguaPlates {
   /// Managua: `M 123 456`.
   static final PlateSpec managua = _build(
