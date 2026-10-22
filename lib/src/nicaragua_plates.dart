@@ -45,32 +45,15 @@ abstract final class _Layout {
 /// licensed artwork was found.
 abstract final class NicaraguaPlates {
   /// Managua: `M 123 456`.
-  static final PlateSpec managua = _build(
-    id: 'ni.managua',
-    letters: 1,
-    digits: 6,
-    split: true,
-  );
+  static final PlateSpec managua = _build(id: 'ni.managua', letters: 1, digits: 6, split: true);
 
   /// Departments with a four-digit number: `CT 4361`.
-  static final PlateSpec department = _build(
-    id: 'ni.department',
-    letters: 2,
-    digits: 4,
-  );
+  static final PlateSpec department = _build(id: 'ni.department', letters: 2, digits: 4);
 
   /// Departments with a three-digit number: `MY 142`, `PN 262`.
-  static final PlateSpec departmentShort = _build(
-    id: 'ni.department_short',
-    letters: 2,
-    digits: 3,
-  );
+  static final PlateSpec departmentShort = _build(id: 'ni.department_short', letters: 2, digits: 3);
 
-  static final List<PlateSpec> all = <PlateSpec>[
-    managua,
-    department,
-    departmentShort,
-  ];
+  static final List<PlateSpec> all = <PlateSpec>[managua, department, departmentShort];
 
   static PlateSpec _build({
     required String id,
@@ -80,21 +63,14 @@ abstract final class NicaraguaPlates {
   }) {
     final head = split ? digits ~/ 2 : digits;
     final span =
-        (letters + digits) * _Layout.pitch +
-        _Layout.codeGap +
-        (split ? _Layout.splitGap : 0);
+        (letters + digits) * _Layout.pitch + _Layout.codeGap + (split ? _Layout.splitGap : 0);
     final left = (_Layout.width - span) / 2;
     final digitsLeft = left + letters * _Layout.pitch + _Layout.codeGap;
     final tailLeft = digitsLeft + head * _Layout.pitch + _Layout.splitGap;
 
     PlateSlot run(PlateAlphabet a, int count, double from) => PlateSlot(
       alphabet: a,
-      box: PlateBox(
-        from,
-        _Layout.serialTop,
-        count * _Layout.pitch,
-        _Layout.serialHeight,
-      ),
+      box: PlateBox(from, _Layout.serialTop, count * _Layout.pitch, _Layout.serialHeight),
       length: count,
       spacing: max(0, _Layout.pitch - 0.6 * 0.72 * _Layout.serialHeight),
     );

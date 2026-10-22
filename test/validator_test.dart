@@ -13,10 +13,7 @@ void main() {
   test('the photographed plates are valid', () {
     expect(judge(NicaraguaPlates.managua, chars('M|027|557')).isValid, isTrue);
     expect(judge(NicaraguaPlates.department, chars('CT|4361')).isValid, isTrue);
-    expect(
-      judge(NicaraguaPlates.departmentShort, chars('MY|142')).isValid,
-      isTrue,
-    );
+    expect(judge(NicaraguaPlates.departmentShort, chars('MY|142')).isValid, isTrue);
   });
 
   test('an unknown department code is reported', () {
@@ -28,17 +25,13 @@ void main() {
 
   test('Managua needs six digits', () {
     expect(
-      judge(NicaraguaPlates.department, <String?>['M', '1234'])
-          .reason,
+      judge(NicaraguaPlates.department, <String?>['M', '1234']).reason,
       NicaraguaValidator.reasonManagua,
     );
   });
 
   test('a half-typed Managua number is not judged yet', () {
-    expect(
-      judge(NicaraguaPlates.managua, <String?>['M', '027', null]).isValid,
-      isTrue,
-    );
+    expect(judge(NicaraguaPlates.managua, <String?>['M', '027', null]).isValid, isTrue);
   });
 
   test('every spec passes debugValidateSpec', () {

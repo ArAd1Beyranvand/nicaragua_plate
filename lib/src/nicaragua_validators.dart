@@ -40,8 +40,7 @@ class NicaraguaValidator extends GatedPlateValidator {
   @override
   PlateValidation judge(PlateEntry entry) {
     // A split Managua number is not finished until its second half is in.
-    if (entry.spec.indicesOfGroup('number_tail').isNotEmpty &&
-        entry.group('number_tail').isEmpty) {
+    if (entry.spec.indicesOfGroup('number_tail').isNotEmpty && entry.group('number_tail').isEmpty) {
       return const PlateValidation.valid();
     }
     final code = entry.group('department');

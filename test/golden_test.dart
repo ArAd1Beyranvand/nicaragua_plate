@@ -21,12 +21,7 @@ void main() {
     await loader.load();
   });
 
-  Future<void> renderGolden(
-    WidgetTester tester,
-    PlateSpec spec,
-    String value,
-    String name,
-  ) async {
+  Future<void> renderGolden(WidgetTester tester, PlateSpec spec, String value, String name) async {
     final controller = PlateController.fromValues(spec, value.split('|'));
     await tester.pumpWidget(
       MaterialApp(
@@ -49,10 +44,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await expectLater(
-      find.byType(PlateView),
-      matchesGoldenFile('goldens/$name.png'),
-    );
+    await expectLater(find.byType(PlateView), matchesGoldenFile('goldens/$name.png'));
     await tester.pumpWidget(const SizedBox.shrink());
     controller.dispose();
   }
@@ -63,20 +55,10 @@ void main() {
   );
   testWidgets(
     'Chontales',
-    (t) => renderGolden(
-      t,
-      NicaraguaPlates.department,
-      'CT|4361',
-      'ni_department',
-    ),
+    (t) => renderGolden(t, NicaraguaPlates.department, 'CT|4361', 'ni_department'),
   );
   testWidgets(
     'Masaya',
-    (t) => renderGolden(
-      t,
-      NicaraguaPlates.departmentShort,
-      'MY|142',
-      'ni_department_short',
-    ),
+    (t) => renderGolden(t, NicaraguaPlates.departmentShort, 'MY|142', 'ni_department_short'),
   );
 }
