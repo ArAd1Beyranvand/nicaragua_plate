@@ -1,7 +1,7 @@
 name: nicaragua_plate
 description: "Nicaragua's licence plates for the plate_core library — the 2005 series for Managua and the departments, with its theme, alphabets and advisory validator."
 version: 0.1.0
-publish_to: none
+repository: https://github.com/ArAd1Beyranvand/nicaragua_plate
 resolution: workspace
 
 environment:
