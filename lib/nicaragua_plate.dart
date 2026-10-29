@@ -4,6 +4,9 @@
 /// and a number of three to six digits.
 library;
 
+// TODO(py): [D5] one module `plates.countries.nicaragua`; assets via importlib.resources.
+// TODO(ts): [D5] one subpath export `./countries/nicaragua`; tree-shakable.
+// TODO(kt): [D5] package `countries.nicaragua` in the countries module.
 export 'src/nicaragua_alphabets.dart';
 export 'src/nicaragua_colors.dart';
 export 'src/nicaragua_country.dart';
