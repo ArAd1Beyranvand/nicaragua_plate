@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nicaragua_plate/nicaragua_plate.dart';
 import 'package:plate_core/plate_core.dart';
+import 'package:plate_core/testing.dart';
 
 /// One golden per spec, rendered with a real font so the serial and the two
 /// captions can be measured against the reference.
@@ -28,33 +28,14 @@ void main() {
     String name,
   ) async {
     final controller = PlateController.fromValues(spec, value.split('|'));
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: SizedBox(
-              width: 520,
-              height: 520 * spec.canvasHeight / spec.canvasWidth,
-              child: PlateThemeScope(
-                theme: NicaraguaThemes.standard,
-                child: PlateView(
-                  controller: controller,
-                  theme: NicaraguaThemes.standard,
-                  country: NicaraguaCountry.nicaragua,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+    await pumpPlateGolden(
+      tester,
+      controller,
+      'goldens/$name.png',
+      theme: NicaraguaThemes.standard,
+      country: NicaraguaCountry.nicaragua,
+      stage: Size(520, 520 * spec.canvasHeight / spec.canvasWidth),
     );
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byType(PlateView),
-      matchesGoldenFile('goldens/$name.png'),
-    );
-    await tester.pumpWidget(const SizedBox.shrink());
-    controller.dispose();
   }
 
   testWidgets(

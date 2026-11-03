@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:plate_core/plate_core.dart';
 
 import 'nicaragua_alphabets.dart';
@@ -8,29 +6,23 @@ import 'nicaragua_country.dart';
 /// Ink positions in millimetres on the 300 × 152 mm blank, measured from the
 /// matriculasdelmundo artwork of M 123 456.
 abstract final class _Layout {
-  static const double width = 300;
-  static const double height = 152;
+  static const double width = 300, height = 152;
 
   // "NICARAGUA": serif caps, ink y 5.4–22.8, centred on x 147.6.
-  static const double captionTop = 2;
-  static const double captionHeight = 32;
+  static const double captionTop = 2, captionHeight = 32;
 
   // Serial ink y 38.4–104.4 (66 mm). Ink is ~0.55 of the slot, so the slot is
   // 120 tall around the ink's centre line.
-  static const double serialTop = 11.4;
-  static const double serialHeight = 120;
+  static const double serialTop = 11.4, serialHeight = 120;
 
   // Cell centres step 37.2 mm. The department code is set off from the number
   // by an extra 8 mm, and Managua's six digits split 3 + 3 by an extra 21 mm.
-  static const double pitch = 37.2;
-  static const double codeGap = 8;
-  static const double splitGap = 21;
+  static const double pitch = 37.2, codeGap = 8, splitGap = 21;
 
   // "CENTROAMERICA": ink y 124–145, x 78–214. The plate's face is condensed;
   // the theme's is not, so the glyph is sized to the measured width and the
   // ink comes out about half the measured height.
-  static const double footerTop = 122;
-  static const double footerHeight = 22;
+  static const double footerTop = 122, footerHeight = 22;
 
   // The black block bottom right.
   static const PlateBox block = PlateBox(267.6, 132, 18, 10.2);
@@ -79,45 +71,32 @@ abstract final class NicaraguaPlates {
     bool split = false,
   }) {
     final head = split ? digits ~/ 2 : digits;
-    final span =
-        (letters + digits) * _Layout.pitch +
-        _Layout.codeGap +
-        (split ? _Layout.splitGap : 0);
-    final left = (_Layout.width - span) / 2;
-    final digitsLeft = left + letters * _Layout.pitch + _Layout.codeGap;
-    final tailLeft = digitsLeft + head * _Layout.pitch + _Layout.splitGap;
-
-    PlateSlot run(PlateAlphabet a, int count, double from) => PlateSlot(
-      alphabet: a,
-      box: PlateBox(
-        from,
-        _Layout.serialTop,
-        count * _Layout.pitch,
-        _Layout.serialHeight,
-      ),
-      length: count,
-      spacing: max(0, _Layout.pitch - 0.6 * 0.72 * _Layout.serialHeight),
-    );
-
-    final slots = <PlateSlot>[
-      run(NicaraguaAlphabets.letters, letters, left),
-      run(NicaraguaAlphabets.digits, head, digitsLeft),
-      if (split) run(NicaraguaAlphabets.digits, digits - head, tailLeft),
-    ];
+    final slots = plateRow(
+      <PlateRowItem>[
+        PlateRowRun(NicaraguaAlphabets.letters, letters, group: 'department'),
+        const PlateRowGap(_Layout.codeGap),
+        PlateRowRun(NicaraguaAlphabets.digits, head, group: 'number'),
+        if (split) ...<PlateRowItem>[
+          const PlateRowGap(_Layout.splitGap),
+          PlateRowRun(
+            NicaraguaAlphabets.digits,
+            digits - head,
+            group: 'number_tail',
+          ),
+        ],
+      ],
+      centre: _Layout.width / 2,
+      top: _Layout.serialTop,
+      height: _Layout.serialHeight,
+      pitch: _Layout.pitch,
+    ).slots;
 
     return PlateSpec(
       id: id,
       country: NicaraguaCountry.nicaragua,
       canvasWidth: _Layout.width,
       canvasHeight: _Layout.height,
-      panel: const PlatePanel(box: PlateBox(0, 0, 0, 0)),
-      noPanel: true,
       slots: slots,
-      textGroups: <PlateTextGroup>[
-        const PlateTextGroup(<int>[0], key: 'department'),
-        const PlateTextGroup(<int>[1], key: 'number'),
-        if (split) const PlateTextGroup(<int>[2], key: 'number_tail'),
-      ],
       rules: const <PlateRule>[PlateRule(box: _Layout.block)],
       labels: const <PlateLabel>[
         PlateLabel(

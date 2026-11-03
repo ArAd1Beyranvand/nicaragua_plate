@@ -1,18 +1,12 @@
 import 'package:plate_core/plate_core.dart';
 
-// TODO(py): [D4-code] hand-port; reason strings are the contract, keep them byte-identical.
-// TODO(ts): [D4-code] hand-port; reason strings are the contract, keep them byte-identical.
-// TODO(kt): [D4-code] hand-port; reason strings are the contract, keep them byte-identical.
 /// Judges a 2005-series value. Reports, never throws, never bars a keystroke.
 ///
 /// Quiet until the number is in. Then the department code must be one seen on
 /// the series, and Managua (`M`) takes six digits where every other code takes
 /// three or four.
 class NicaraguaValidator extends GatedPlateValidator {
-  const NicaraguaValidator();
-
-  @override
-  String get gateGroup => 'number';
+  const NicaraguaValidator() : super('number');
 
   /// Codes confirmed on 2005-series plates or in the sources' lists. Boaco,
   /// Carazo, Madriz, Río San Juan and Rivas certainly have codes, but none was
